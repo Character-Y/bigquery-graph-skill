@@ -5,7 +5,8 @@ model documents (data dictionaries, ER diagrams, rule notes) — into a property
 graph with semantic definitions (dimensions and measures), with every candidate
 relationship verified against the data before it lands.
 
-**This is a preview release.** The official version will ship with ADK or DAK.
+**This is a preview release.** The official version will ship with ADK or
+[DAK](https://github.com/gemini-cli-extensions/data-agent-kit-starter-pack/blob/main/skills/bigquery-graph/SKILL.md).
 
 ## What's inside
 
@@ -27,7 +28,9 @@ its own capabilities; the skill only assumes:
 - a way to execute BigQuery SQL (any SQL-execution tool, or the platform's
   own query surface — the references anchor every step in
   `INFORMATION_SCHEMA` queries rather than named tools);
-- a way to open the files under `references/` when a station calls for them.
+- the contents of `references/` available to it in some form — a skill-resource
+  loader, a file-reading tool, or simply pre-loading the files into context
+  all work; the skill does not assume any particular mechanism.
 
 To install, mount the `bigquery-graph/` directory into any harness that loads
 skills by directory (the directory name must match the `name:` field in the
