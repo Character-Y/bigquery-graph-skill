@@ -5,8 +5,8 @@ model documents (data dictionaries, ER diagrams, rule notes) — into a property
 graph with semantic definitions (dimensions and measures), with every candidate
 relationship verified against the data before it lands.
 
-**This is a preview release.** The official version will ship with ADK or
-[DAK](https://github.com/gemini-cli-extensions/data-agent-kit-starter-pack/blob/main/skills/bigquery-graph/SKILL.md).
+**This is a preview release.** The official version will ship with the
+[Data Agent Kit](https://github.com/gemini-cli-extensions/data-agent-kit-starter-pack/blob/main/skills/bigquery-graph/SKILL.md).
 
 ## What's inside
 
