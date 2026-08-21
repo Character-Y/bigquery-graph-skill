@@ -6,7 +6,8 @@ graph with semantic definitions (dimensions and measures), with every candidate
 relationship verified against the data before it lands.
 
 **This is a preview release.** The official version will ship with the
-[Data Agent Kit](https://github.com/gemini-cli-extensions/data-agent-kit-starter-pack/blob/main/skills/bigquery-graph/SKILL.md).
+[Data Agent Kit](https://github.com/gemini-cli-extensions/data-agent-kit-starter-pack/blob/main/skills/bigquery-graph/SKILL.md)
+and will be available on Sep 7.
 
 ## What's inside
 
