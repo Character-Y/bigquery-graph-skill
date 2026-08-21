@@ -46,7 +46,7 @@ SELECT
   COUNT(*)                                                    AS edge_rows,
   COUNTIF(e.<fk_col> IS NULL)                                 AS fk_null,
   COUNTIF(n.<key_col> IS NOT NULL)                            AS resolved,
-  ROUND(100 * COUNTIF(n.<key_col> IS NOT NULL) / COUNT(*), 2) AS resolved_pct
+  ROUND(SAFE_DIVIDE(100 * COUNTIF(n.<key_col> IS NOT NULL), COUNT(*)), 2) AS resolved_pct
 FROM      `<project>.<dataset>.<edge_table>` AS e
 LEFT JOIN `<project>.<dataset>.<node_table>` AS n
        ON e.<fk_col> = n.<key_col>;

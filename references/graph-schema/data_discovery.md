@@ -7,19 +7,21 @@ relationship still goes through the checks in `relationship_verification.md`
 (the relationship-verification station) before it may appear in a proposal — every edge carries data-side
 evidence, never a document's or a catalog's word alone.
 
-### 1.1 Datasets: answer from `list_datasets`, never from memory
+### 1.1 Datasets: answer from a live listing, never from memory
 
-If the user asks what datasets exist, call `list_datasets` and answer from
-what it returns. **`list_datasets` sees the current project only**: when the
-user mentions another project's dataset, take the name from them — absence
-from `list_datasets` is not evidence it does not exist. If the user names a
+If the user asks what datasets exist, pull a live listing — query
+`INFORMATION_SCHEMA.SCHEMATA`, or use your platform's dataset-listing tool
+if one is available — and answer from what it returns. **A listing sees the
+current project only**: when the user mentions another project's dataset,
+take the name from them — absence from the listing is not evidence it does
+not exist. If the user names a
 dataset and nothing else, assume they wish to use any and all base tables in
 it and say so.
 
 ### 1.2 Close the roster — every object, no type filter
 
-Never treat a schema-listing tool's output (`inspect_dataset`, or whatever
-tool lists tables and columns on your platform) as the full object list —
+Never treat a schema-listing tool's output (whatever tool lists tables and
+columns on your platform) as the full object list —
 pull the roster with the query below.
 **`BASE TABLE` is not a synonym for "table"** — `VIEW`, `MATERIALIZED VIEW`,
 `CLONE`, `SNAPSHOT` and `EXTERNAL` are all queryable and none is automatically
@@ -77,7 +79,7 @@ substitute for querying them. Once per dataset, right after the roster:
 3. Per segment (*schema* and *business descriptions* only): populated =
    usable — use it, without also calling the matching direct-source tool for
    the same fact (once per source). Empty, not enabled, or errored = not
-   usable — schema falls back to `inspect_dataset`; business descriptions
+   usable — schema falls back to the schema listing (§1.2); business descriptions
    have no fallback, say so and move on. State every fallback, never silent.
 4. If a KC call errors or times out, report the failure (never fabricate a
    substitute) and fall back as above. A KC outage should never block the
@@ -96,7 +98,7 @@ before moving to labelled inference.
 
 **What schema access alone cannot see:** BigQuery rejects a foreign key that
 references its own table, so a genuine self-referencing relationship carries
-no declared constraint anywhere — neither `inspect_dataset` nor
+no declared constraint anywhere — neither the schema listing nor
 `technical_metadata`'s mirror will show it. Job history (1.4) is what
 surfaces it.
 
@@ -218,8 +220,9 @@ owes a roster row: "nothing connects to it" is a real, reportable finding.
 When two sources disagree about whether or how tables relate, resolve by
 evidence *type*, not by which tool produced it, high to low:
 
-1. A declared constraint from `inspect_dataset` (`primary_key` /
-   `foreign_keys`) — a stated fact.
+1. A declared constraint from the schema listing (`primary_key` /
+   `foreign_keys`, e.g. via `INFORMATION_SCHEMA.TABLE_CONSTRAINTS`) — a
+   stated fact.
 2. Direct query evidence you read yourself — a job-history `ON` predicate
    (layer 2) or a relationship-verification resolution check. An `operational_metadata` entry
    never sits here, even one naming a specific query — it is level 3.

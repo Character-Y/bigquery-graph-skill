@@ -22,7 +22,7 @@ the relationship-verification station's verification like any other candidate, a
 declaration (dimension, measure, business definition) carries into the plan station's
 plan as a `declared` proposal.
 
-### Reading the document
+### 1. Reading the document
 
 **Make no assumption about how the document reaches you.** It may be pasted into
 the conversation, supplied by a platform document tool, or attached as an image
@@ -39,7 +39,7 @@ of a diagram. Take whichever channel is actually available.
   are illegible, name those parts rather than filling them in.
 - **Read all of it before you extract.**
 
-### Extracting the entities, relationships and semantic declarations
+### 2. Extracting the entities, relationships and semantic declarations
 
 Produce three lists, and produce them **as lists the user can check against
 their own document** — quoting its wording, not your paraphrase.
@@ -71,7 +71,7 @@ later ledger closes against.
 **Anything you could not extract goes in a fourth list**: passages you did not
 understand, contradictions, sections about systems other than this dataset.
 
-### Mapping the document's names to the database
+### 3. Mapping the document's names to the database
 
 Names in documents are not table names. Map them, and **map them against the
 roster query's result**.
@@ -95,7 +95,7 @@ Print the mapping table before you use it:
   (the compose station) does not add tables outside it. Bridge-table rules apply on top
   of this set exactly as they do for any other dataset-derived set.
 
-### Verifying relationships — the document's word is not evidence
+### 4. Verifying relationships — the document's word is not evidence
 
 Every relationship that survives mapping goes through the relationship-verification station's verification
 unchanged: the uniqueness check on its key, the resolution check on the join,
@@ -108,7 +108,7 @@ job-history `ON` predicate, and a measured `Resolved %` either way. If the only
 thing supporting a relationship is the document, its badge is `unconfirmed` and
 it does not count among the confirmed relationships.
 
-### The six conflict cases
+### 5. The six conflict cases
 
 The document and the dataset will disagree. Each disagreement has one specified
 behaviour, and **each of them is a thing the user sees** — the shared failure
@@ -127,7 +127,7 @@ across all six is handling it silently.
 always resolved by the user.** You state both sides and ask — except in case 3,
 where you also refuse to build a 0% edge.
 
-### What this station must hand back
+### 6. What this station must hand back
 
 This is additional to what the discovery station always produces for a dataset without a
 document — a missing item is reported as missing rather than left out.

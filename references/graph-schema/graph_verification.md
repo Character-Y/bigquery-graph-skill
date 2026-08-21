@@ -3,7 +3,7 @@
 This file walks through how a created graph can be verified by running GQL /
 semantic SQL queries against the graph.
 
-## The light read-back (start here)
+## 1. The quick smoke check — one query to confirm the graph answers (start here)
 
 One query after a build: confirm the graph can answer, not exhaustively
 verify it. Pick any relationship that
@@ -43,14 +43,14 @@ pass — say so in one line: the graph answers. A mismatch is a finding, not
 noise — report it explicitly, name which side looks wrong if you know, and
 never average or quietly prefer one number.
 
-## The optional full suite
+## 2. The optional full suite
 
 The full verification suite checks the created graph against
 `INFORMATION_SCHEMA` and GQL / semantic SQL queries (where applicable), and
 produces a full report for the user. Every check here is a query you run
 yourself.
 
-### Confirm it is registered, then count each edge type
+### 2.1 Confirm it is registered, then count each edge type
 
 ```sql
 SELECT property_graph_name FROM `<dataset>.INFORMATION_SCHEMA.PROPERTY_GRAPHS`;
@@ -58,7 +58,7 @@ SELECT property_graph_name FROM `<dataset>.INFORMATION_SCHEMA.PROPERTY_GRAPHS`;
 
 **A naive `COUNT(*)` over a `GRAPH_TABLE` match returns the edge table's raw
 row count, not the number of edges whose endpoints actually exist.** Run the
-same consumed-endpoint query from the light read-back above (its probe-column
+same consumed-endpoint query from the smoke check (§1) above (its probe-column
 rules apply), once per edge label, with probe columns chosen for that label's
 node types.
 
@@ -66,7 +66,7 @@ node types.
 above. The two methods should agree; a disagreement is itself a finding
 and must be reported, not averaged.
 
-### Reconcile against the raw edge table
+### 2.2 Reconcile against the raw edge table
 
 ```sql
 SELECT COUNT(*) AS raw_rows FROM `<edge_table>`;
@@ -76,7 +76,7 @@ Put `true_edges` and `raw_rows` side by side for every edge type. When they
 differ, **name the cause** — expired foreign keys, a resolution rate short
 of 100%, a filter applied upstream — and report both numbers with the cause.
 
-### Check every node type is reachable
+### 2.3 Check every node type is reachable
 
 An **orphan node table** — declared, full of rows, referenced by no edge —
 is legal DDL and produces an island in the graph. No error message will
@@ -104,7 +104,7 @@ run one real multi-hop traversal that returns actual rows (for example
 user → order → product), labeled and directed, with a small `LIMIT`, so
 "traversable" is demonstrated rather than assumed.
 
-### Reconcile against the approved plan
+### 2.4 Reconcile against the approved plan
 
 Every element in the plan the user approved must appear in the landed
 DDL, and every element in the landed DDL must trace back to that plan or
@@ -119,7 +119,7 @@ and say where it came in. If the user named specific tables up front
 (prompt or document), confirm each landed and say so first in the closing
 message — this catches "we scoped to three things and delivered two."
 
-### Check every metric against plain SQL
+### 2.5 Check every metric against plain SQL
 
 Only if semantics were confirmed. Compute each metric through the graph and
 straight off the base tables, and print the two side by side.
@@ -161,7 +161,7 @@ single grand total can match by luck when a fan-out cancels out. A
 disagreement is almost always the metric defined on the wrong table.
 Report the comparison, never the `GRAPH_EXPAND` figure alone.
 
-### Write the numbers down
+### 2.6 Write the numbers down
 
 Your closing report must contain, in the message to the user:
 
